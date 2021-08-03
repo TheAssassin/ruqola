@@ -1,0 +1,23 @@
+version: 1
+
+project:
+  name: org.kde.ruqola
+  version_command: git describe --tags
+
+scripts:
+  post_build:
+    - cp -R "$BUILD_DIR"/AppDir/usr/lib/qt5/plugins "$BUILD_DIR"/AppDir/usr/plugins || true
+    - cp -R "$BUILD_DIR"/AppDir/usr/lib/x86_64-linux-gnu/qt5/plugins "$BUILD_DIR"/AppDir/usr/plugins || true
+      
+
+build:
+  cmake:
+    raw_extra_variables:
+      - CMAKE_PREFIX_PATH="$BUILD_DIR"/ecm/usr/share/ECM/cmake
+
+appimage:
+  linuxdeploy:
+    raw_environment:
+      - LD_LIBRARY_PATH="$BUILD_DIR"/AppDir/usr/lib
+    plugins:
+      - qt
