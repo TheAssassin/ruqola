@@ -24,6 +24,13 @@
 #include <QDateTime>
 #include <qglobal.h>
 
+#define Q_DISABLE_COPY_MOVE(Class)                                                                                                                             \
+private:                                                                                                                                                       \
+    Class(const Class &);                                                                                                                                      \
+    Class &operator=(const Class &);                                                                                                                           \
+    Class(const Class &&);                                                                                                                                     \
+    Class &operator=(const Class &&);
+
 class LIBRUQOLACORE_TESTS_EXPORT LoadRecentHistoryManager
 {
 public:

@@ -7,8 +7,8 @@ project(Ruqola VERSION ${RUQOLA_VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(KF5_MIN_VERSION "5.82.0")
-set(REQUIRED_QT_VERSION "5.15.0")
+set(KF5_MIN_VERSION "5.68.0")
+set(REQUIRED_QT_VERSION "5.12.8")
 
 # Do NOT add quote
 set(RUQOLA_DEV_VERSION alpha)
@@ -34,7 +34,7 @@ include(ECMAddTests)
 include(GenerateExportHeader)
 include(FeatureSummary)
 include(CheckIncludeFileCXX)
-include(KDEGitCommitHooks)
+#include(KDEGitCommitHooks)
 
 option(OPTION_BUILD_PYTHON_BINDINGS "Build python bindings" OFF)
 
@@ -164,7 +164,7 @@ ecm_qt_install_logging_categories(
         FILE ruqola.categories
         DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
         )
-kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
+#kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 ki18n_install(po)
 if (KF5DocTools_FOUND)
     kdoctools_install(po)
