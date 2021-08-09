@@ -30,6 +30,8 @@ jobs:
             target=continuous
         fi
         (set -x; echo "UPD_INFO=gh-releases-zsync|TheAssassin|ruqola|$target|Ruqola-*x86_64.AppImage.zsync" >> "$GITHUB_ENV")
+    - name: Delete continuous tag locally to fix versioning
+      run: git tag -d continuous || true
     - name: Build AppImage
       run: |
         wget https://github.com/TheAssassin/appimagecraft/releases/download/continuous/appimagecraft-x86_64.AppImage
