@@ -22,6 +22,14 @@ jobs:
             libkf5textwidgets-dev libkf5doctools-dev qt5keychain-dev qtbase5-dev libkf5solid-dev libkf5networkmanagerqt-dev \
             qt5-default libqt5websockets5-dev libqt5networkauth5-dev qtmultimedia5-dev libqt5svg5-dev gettext \
             libqt5texttospeech5-dev libqt5multimedia5-plugins qtspeech5-flite-plugin qtspeech5-speechd-plugin
+    - name: Set up update information
+      run: |
+        if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            target=latest
+        else
+            target=continuous
+        fi
+        (set -x; echo "UPD_INFO=gh-releases-zsync|TheAssassin|ruqola|$target|Ruqola-*x86_64.AppImage.zsync" >> "$GITHUB_ENV")
     - name: Build AppImage
       run: |
         wget https://github.com/TheAssassin/appimagecraft/releases/download/continuous/appimagecraft-x86_64.AppImage
