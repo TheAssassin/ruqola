@@ -71,6 +71,16 @@ public:
     Q_REQUIRED_RESULT const TeamInfo &teamInfo() const;
     void setTeamInfo(const TeamInfo &newTeamInfo);
 
+    Q_REQUIRED_RESULT qint64 lastMessage() const;
+    void setLastMessage(qint64 newLastMessage);
+
+    Q_REQUIRED_RESULT QString lastMessageDisplayDateTimeStr() const;
+
+    Q_REQUIRED_RESULT qint64 createdRoom() const;
+    void setCreatedRoom(qint64 newCreatedRoom);
+
+    Q_REQUIRED_RESULT QString createdRoomDisplayDateTimeStr() const;
+
 private:
     void generateDisplayChannelType();
     TeamInfo mTeamInfo;
@@ -81,6 +91,10 @@ private:
     QString mChannelType;
     QString mChannelTypeStr;
     QString mName;
+    QString mLastMessageDisplayTime;
+    QString mCreatedRoomDisplayTime;
+    qint64 mLastMessage = -1;
+    qint64 mCreatedRoom = -1;
     int mMessageCount = -1;
     int mUsersCount = -1;
     bool mDefaultRoom = false;

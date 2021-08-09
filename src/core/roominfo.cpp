@@ -21,8 +21,10 @@
 #include "roominfo.h"
 
 #include "ruqola_debug.h"
+#include "utils.h"
 #include <KLocalizedString>
 #include <QJsonArray>
+#include <QLocale>
 
 RoomInfo::RoomInfo()
 {
@@ -49,6 +51,12 @@ void RoomInfo::parseRoomInfo(const QJsonObject &object)
     }
     if (object.contains(QLatin1String("default"))) {
         setDefaultRoom(object[QStringLiteral("default")].toBool());
+    }
+    if (object.contains(QLatin1String("lastMessage"))) {
+        setLastMessage(Utils::parseIsoDate(QStringLiteral("_updatedAt"), object[QStringLiteral("lastMessage")].toObject()));
+    }
+    if (object.contains(QLatin1String("ts"))) {
+        setCreatedRoom(Utils::parseIsoDate(QStringLiteral("ts"), object));
     }
     setIdentifier(object[QStringLiteral("_id")].toString());
     setReadOnly(object[QStringLiteral("ro")].toBool());
@@ -129,6 +137,40 @@ static QString convertChannelType(const QString &str, bool mainTeam)
 void RoomInfo::generateDisplayChannelType()
 {
     mChannelTypeStr = convertChannelType(mChannelType, mTeamInfo.mainTeam());
+}
+
+qint64 RoomInfo::createdRoom() const
+{
+    return mCreatedRoom;
+}
+
+void RoomInfo::setCreatedRoom(qint64 newCreatedRoom)
+{
+    mCreatedRoom = newCreatedRoom;
+    QLocale l;
+    mCreatedRoomDisplayTime = (mCreatedRoom != -1) ? l.toString(QDateTime::fromMSecsSinceEpoch(mCreatedRoom), QLocale::LongFormat) : QString();
+}
+
+QString RoomInfo::createdRoomDisplayDateTimeStr() const
+{
+    return mCreatedRoomDisplayTime;
+}
+
+qint64 RoomInfo::lastMessage() const
+{
+    return mLastMessage;
+}
+
+QString RoomInfo::lastMessageDisplayDateTimeStr() const
+{
+    return mLastMessageDisplayTime;
+}
+
+void RoomInfo::setLastMessage(qint64 newLastMessage)
+{
+    mLastMessage = newLastMessage;
+    QLocale l;
+    mLastMessageDisplayTime = (mLastMessage != -1) ? l.toString(QDateTime::fromMSecsSinceEpoch(mLastMessage), QLocale::LongFormat) : QString();
 }
 
 void RoomInfo::setChannelType(const QString &channelType)
@@ -223,7 +265,8 @@ bool RoomInfo::operator==(const RoomInfo &other) const
 {
     return mDefaultRoom == other.defaultRoom() && mUsersCount == other.usersCount() && mMessageCount == other.messageCount()
         && mChannelType == other.channelType() && mIdentifier == other.identifier() && mTopic == other.topic() && mName == other.name()
-        && mUserNames == other.userNames() && mUsers == other.users() && mTeamInfo == other.teamInfo();
+        && mUserNames == other.userNames() && mUsers == other.users() && mTeamInfo == other.teamInfo() && mLastMessage == other.lastMessage()
+        && mCreatedRoom == other.createdRoom();
 }
 
 QDebug operator<<(QDebug d, const RoomInfo &t)
@@ -238,5 +281,7 @@ QDebug operator<<(QDebug d, const RoomInfo &t)
     d << " usernames: " << t.userNames();
     d << " users: " << t.users();
     d << " teaminfo: " << t.teamInfo();
+    d << " lastMessage : " << t.lastMessage();
+    d << " created : " << t.createdRoom();
     return d;
 }

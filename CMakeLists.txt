@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2020-2021 Laurent Montel <montel@kde.org>
 # SPDX-License-Identifier: BSD-3-Clause
 
-set(RUQOLA_VERSION "1.5.0")
+set(RUQOLA_VERSION "1.5.40")
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 project(Ruqola VERSION ${RUQOLA_VERSION})
 set(CMAKE_CXX_STANDARD 14)
@@ -11,7 +11,7 @@ set(KF5_MIN_VERSION "5.68.0")
 set(REQUIRED_QT_VERSION "5.12.8")
 
 # Do NOT add quote
-set(RUQOLA_DEV_VERSION )
+set(RUQOLA_DEV_VERSION alpha)
 
 # add an extra space
 if(DEFINED RUQOLA_DEV_VERSION)
@@ -34,9 +34,7 @@ include(ECMAddTests)
 include(GenerateExportHeader)
 include(FeatureSummary)
 include(CheckIncludeFileCXX)
-if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
-    include(KDEGitCommitHooks)
-endif()
+include(KDEGitCommitHooks)
 
 option(OPTION_BUILD_PYTHON_BINDINGS "Build python bindings" OFF)
 
@@ -166,9 +164,7 @@ ecm_qt_install_logging_categories(
         FILE ruqola.categories
         DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
         )
-if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
-    kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
-endif()
+kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 ki18n_install(po)
 if (KF5DocTools_FOUND)
     kdoctools_install(po)
